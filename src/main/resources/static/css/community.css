@@ -1,12 +1,29 @@
 .btn-publish{
-    float: right;
     margin-bottom: 10px;
 }
 body{
-    background-color: #1b6d85;
+    /*background-color: #1b6d85;*/
+    background: url("../images/body-background.jpg" );
 }
 
 .main{
     background-color: antiquewhite;
-    margin: 30px;
+    margin: 60px;
+}
+.avatar-size{
+    height: 45px;
+    width: 45px;
+}
+.question-condition{
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+}
+.float-right{
+    float: right;
+}
+.gray-line{
+    width: 100%;
+    height: 1px;
+    background-color: #999
 }
