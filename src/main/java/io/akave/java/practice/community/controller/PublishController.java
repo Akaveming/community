@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class PublishController {
+
+    /**
+     * 问题发布
+     * @return
+     */
     @RequestMapping("/publish")
     public String publish() {
         return "publish";

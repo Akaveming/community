@@ -9,3 +9,9 @@
 ## 工具
 [绘图软件 Visual-Paradigm](https://www.visual-paradigm.com/)\
 
+## 脚本
+Flyway 的执行脚本
+```jshelllanguage
+mvn flyway:migrate
+```
+

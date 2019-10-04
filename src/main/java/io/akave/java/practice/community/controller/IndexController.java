@@ -13,16 +13,24 @@ import javax.servlet.http.HttpServletRequest;
 public class IndexController {
     @Autowired
     private UserMapper userMapper;
+
+    /**
+     * 首页
+     * @param request
+     * @return
+     */
     @GetMapping("/")
     public String index(HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            String name = cookie.getName();
-            if ("token".equals(name)) {
-                String token = cookie.getValue();
-                User user = userMapper.findUserByToken(token);
-                if (user != null) {
-                    request.getSession().setAttribute("user", user);
+        if (cookies != null && cookies.length != 0) {
+            for (Cookie cookie : cookies) {
+                String name = cookie.getName();
+                if ("token".equals(name)) {
+                    String token = cookie.getValue();
+                    User user = userMapper.findUserByToken(token);
+                    if (user != null) {
+                        request.getSession().setAttribute("user", user);
+                    }
                 }
             }
         }

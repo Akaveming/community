@@ -34,10 +34,14 @@ public class AuthorizeController {
 
     @Autowired
     private UserMapper userMapper;
-    public AuthorizeController(GithubProvider githubProvider) {
-        this.githubProvider = githubProvider;
-    }
 
+    /**
+     * GitHub 登录验证回调
+     * @param code
+     * @param state
+     * @param response
+     * @return
+     */
     @GetMapping("callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
@@ -59,6 +63,7 @@ public class AuthorizeController {
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
+            user.setBio(githubUser.getBio());
             userMapper.insert(user);
             response.addCookie(new Cookie("token", token));
             return "redirect:/";
