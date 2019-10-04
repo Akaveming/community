@@ -16,7 +16,7 @@
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Akave 社区</span>
             </button>
-            <a class="navbar-brand" href="#">Akave 社区</a>
+            <a class="navbar-brand" href="/">Akave 社区</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -34,6 +34,7 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="/publish">发布</a></li>
                 <li th:if="${session.user == null}"><a href="https://github.com/login/oauth/authorize?client_id=896852d333b2c9b48660&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登录</a></li>
 
                 <li class="dropdown" th:if="${session.user != null}">
@@ -57,16 +58,16 @@
             <form action="/publish" method="post">
                 <div class="form-group">
                     <label for="title">问题标题（简明扼要）：</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="问题标题">
+                    <input type="text" class="form-control" id="title" name="title" placeholder="问题标题" th:value="${title}">
                 </div>
                 <div class="form-group">
                     <label for="description">问题补充（必填，参考右侧说明）：</label>
-                    <textarea name="description" class="form-control" id="description" cols="30" rows="10"></textarea>
+                    <textarea name="description" class="form-control" id="description" cols="30" rows="40" th:text="${description}"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="tag">添加标签：</label>
-                    <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签">
+                    <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签" th:value="${tag}">
                 </div>
                 <div class="container-fluid">
                     <div class="row">
