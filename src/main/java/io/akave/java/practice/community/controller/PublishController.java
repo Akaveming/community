@@ -1,7 +1,6 @@
 package io.akave.java.practice.community.controller;
 
 import io.akave.java.practice.community.mapper.QuestionMapper;
-import io.akave.java.practice.community.mapper.UserMapper;
 import io.akave.java.practice.community.model.Question;
 import io.akave.java.practice.community.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -21,9 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 public class PublishController {
     @Autowired
     private QuestionMapper questionMapper;
-
-    @Autowired
-    private UserMapper userMapper;
 
     /**
      * 问题发布
@@ -59,24 +54,9 @@ public class PublishController {
         if (tag == null || "".equals(tag)) {
             model.addAttribute("error","标签不能为空");
             return "publish";
-        }
+    }
 
-
-        User user = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null && cookies.length != 0) {
-            for (Cookie cookie : cookies) {
-                String name = cookie.getName();
-                if ("token".equals(name)) {
-                    String token = cookie.getValue();
-                   user = userMapper.findUserByToken(token);
-                    if (user != null) {
-                        request.getSession().setAttribute("user", user);
-                    }
-                    break;
-                }
-            }
-        }
+    User user = (User) request.getSession().getAttribute("user");
         if (user == null){
             model.addAttribute("error","用户未登录");
             return "publish";

@@ -37,4 +37,26 @@ public class QuestionService {
         }
         return questionDTOs;
     }
+
+    public List<QuestionDTO> list(Integer userId, Integer index, Integer size) {
+        List<QuestionDTO> questionDTOs = new ArrayList<>(15);
+        Integer offset = (index - 1) * size;
+        List<Question> questions = questionMapper.listByUserId(userId,offset, size);
+        for (Question question : questions) {
+            User user = userMapper.findUserById(question.getCreator());
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question,questionDTO);
+            questionDTO.setUser(user);
+            questionDTOs.add(questionDTO);
+        }
+        return questionDTOs;
+    }
+
+    public QuestionDTO findQuestionById(Integer id) {
+        QuestionDTO questionDTO = new QuestionDTO();
+        Question question = questionMapper.findQuestionById(id);
+        BeanUtils.copyProperties(question,questionDTO);
+
+        return questionDTO;
+    }
 }

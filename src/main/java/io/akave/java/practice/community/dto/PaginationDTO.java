@@ -23,29 +23,34 @@ public class PaginationDTO {
         this.total = total;
         pageList = new LinkedList<>();
         //显示当前页的前三页码和后三页码，如果页码合法的话
-        pageList.add(index);
-        int tempPagiration = 0;
-        for (int i = 1; i < 4; i++) {
-            tempPagiration = index - i;
-            if (tempPagiration > 0) {
-                pageList.add(0,tempPagiration);
-            }
-            tempPagiration = index + i;
-            if (tempPagiration <= total) {
-                pageList.add(tempPagiration);
+        if (index <= total && index > 0) {
+            pageList.add(index);
+
+            int tempPagiration = 0;
+            for (int i = 1; i < 4; i++) {
+                tempPagiration = index - i;
+                if (tempPagiration > 0) {
+                    pageList.add(0,tempPagiration);
+                }
+                tempPagiration = index + i;
+                if (tempPagiration <= total) {
+                    pageList.add(tempPagiration);
+                }
             }
         }
 
-        //是否显示到第一页的按钮
-        showFirstPage = !pageList.contains(1);
+        if (total > 0) {
+            //是否显示到第一页的按钮
+            showFirstPage = !(pageList.contains(1));
 
-        //是否显示到最后一页的按钮
-        showLastPage = !pageList.contains(total);
+            //是否显示到最后一页的按钮
+            showLastPage = !pageList.contains(total);
 
-        //是否显示前一页按钮
-        showPrevious = !index.equals(1);
+            //是否显示前一页按钮
+            showPrevious = !index.equals(1);
 
-        //是否显示下一页按钮
-        showNext = !index.equals(total);
+            //是否显示下一页按钮
+            showNext = !index.equals(total);
+        }
     }
 }
