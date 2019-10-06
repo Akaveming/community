@@ -3,6 +3,7 @@ package io.akave.java.practice.community.controller;
 import io.akave.java.practice.community.dto.PaginationDTO;
 import io.akave.java.practice.community.dto.QuestionDTO;
 import io.akave.java.practice.community.mapper.QuestionMapper;
+import io.akave.java.practice.community.model.QuestionExample;
 import io.akave.java.practice.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,8 +30,10 @@ public class IndexController {
             @RequestParam(name = "index",defaultValue = "1") Integer index,
             @RequestParam(name = "size",defaultValue = "12") Integer size
     ){
-        Integer totalCount = questionMapper.count();
-        int total = 0;
+        QuestionExample questionExample = new QuestionExample();
+        Integer totalCount = Math.toIntExact(questionMapper.countByExample(questionExample));
+
+        int total;
         if (totalCount % size == 0) {
             total = totalCount / size;
         } else {

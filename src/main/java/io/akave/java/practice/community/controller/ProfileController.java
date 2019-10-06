@@ -3,6 +3,7 @@ package io.akave.java.practice.community.controller;
 import io.akave.java.practice.community.dto.PaginationDTO;
 import io.akave.java.practice.community.dto.QuestionDTO;
 import io.akave.java.practice.community.mapper.QuestionMapper;
+import io.akave.java.practice.community.model.QuestionExample;
 import io.akave.java.practice.community.model.User;
 import io.akave.java.practice.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,11 @@ public class ProfileController {
             model.addAttribute("sectionName", "最新回复");
         }
 
-        Integer totalCount = questionMapper.countByUsrId(user.getId());
-        int total = 0;
+//        Integer totalCount = questionMapper.countByUsrId(user.getId());
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andCreatorEqualTo(user.getId());
+        Integer totalCount = Math.toIntExact(questionMapper.countByExample(questionExample));
+        int total;
         if (totalCount % size == 0) {
             total = totalCount / size;
         } else {
