@@ -27,8 +27,6 @@ public class QuestionController {
             ) {
 
         QuestionDTO questionDTO = questionService.findQuestionById(id);
-        User user = (User) request.getSession().getAttribute("user");
-        questionDTO.setUser(user);
 
         model.addAttribute("question", questionDTO);
         return "question";

@@ -57,6 +57,9 @@ public class QuestionService {
         Question question = questionMapper.findQuestionById(id);
         BeanUtils.copyProperties(question,questionDTO);
 
+        User user = userMapper.findUserById(question.getCreator());
+        questionDTO.setUser(user);
+
         return questionDTO;
     }
 }
