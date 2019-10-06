@@ -27,3 +27,13 @@ body{
     height: 1px;
     background-color: #999
 }
+hr{
+    border-top: 1px solid black;
+}
+a{
+    cursor: pointer;
+}
+.community-menu{
+    font-size: 13px;
+    color: #999;
+}

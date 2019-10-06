@@ -22,6 +22,7 @@ public class PublishController {
 
     /**
      * 问题发布
+     *
      * @return
      */
     @RequestMapping("/publish")
@@ -31,34 +32,34 @@ public class PublishController {
 
     @PostMapping("/publish")
     public String doPublish(
-            @RequestParam(name = "title",required = false) String title,
-            @RequestParam(name = "description",required = false) String description,
-            @RequestParam(name = "tag",required = false) String tag,
+            @RequestParam(name = "title", required = false) String title,
+            @RequestParam(name = "description", required = false) String description,
+            @RequestParam(name = "tag", required = false) String tag,
             HttpServletRequest request,
             Model model
-    ){
-        model.addAttribute("error",null);
+    ) {
+        model.addAttribute("error", null);
 
-        model.addAttribute("title",title);
-        model.addAttribute("description",description);
-        model.addAttribute("tag",tag);
+        model.addAttribute("title", title);
+        model.addAttribute("description", description);
+        model.addAttribute("tag", tag);
 
         if (title == null || "".equals(title)) {
-            model.addAttribute("error","标题不能为空");
+            model.addAttribute("error", "标题不能为空");
             return "publish";
         }
         if (description == null || "".equals(description)) {
-            model.addAttribute("error","问题描述不能为空");
+            model.addAttribute("error", "问题描述不能为空");
             return "publish";
         }
         if (tag == null || "".equals(tag)) {
-            model.addAttribute("error","标签不能为空");
+            model.addAttribute("error", "标签不能为空");
             return "publish";
-    }
+        }
 
-    User user = (User) request.getSession().getAttribute("user");
-        if (user == null){
-            model.addAttribute("error","用户未登录");
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            model.addAttribute("error", "用户未登录");
             return "publish";
         }
 
