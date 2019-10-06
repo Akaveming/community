@@ -62,4 +62,18 @@ public class QuestionService {
 
         return questionDTO;
     }
+
+    public void  createOrUpdate(Integer id, Question question) {
+        if (id == null) {
+            //创建问题
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.create(question);
+        } else {
+            //更新问题
+            question.setId(id);
+            question.setGmtModified(System.currentTimeMillis());
+            questionMapper.update(question);
+        }
+    }
 }

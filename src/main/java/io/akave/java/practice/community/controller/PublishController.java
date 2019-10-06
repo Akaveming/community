@@ -3,12 +3,11 @@ package io.akave.java.practice.community.controller;
 import io.akave.java.practice.community.mapper.QuestionMapper;
 import io.akave.java.practice.community.model.Question;
 import io.akave.java.practice.community.model.User;
+import io.akave.java.practice.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,12 +19,15 @@ public class PublishController {
     @Autowired
     private QuestionMapper questionMapper;
 
+    @Autowired
+    private QuestionService questionService;
+
     /**
      * 问题发布
      *
      * @return
      */
-    @RequestMapping("/publish")
+    @GetMapping("/publish")
     public String publish() {
         return "publish";
     }
@@ -35,11 +37,11 @@ public class PublishController {
             @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "description", required = false) String description,
             @RequestParam(name = "tag", required = false) String tag,
+            @RequestParam(name = "id", required = false) Integer id,
             HttpServletRequest request,
             Model model
     ) {
         model.addAttribute("error", null);
-
         model.addAttribute("title", title);
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
@@ -68,10 +70,20 @@ public class PublishController {
         question.setTag(tag);
         question.setDescription(description);
         question.setCreator(user.getId());
-        question.setGmtCreate(System.currentTimeMillis());
-        question.setGmtModified(question.getGmtCreate());
-
-        questionMapper.create(question);
+        questionService.createOrUpdate(id,question);
         return "redirect:/";
+    }
+
+    @GetMapping("/publish/{id}")
+    public String edit(
+            @PathVariable(name = "id") Integer id,
+            Model model
+    ) {
+        Question question = questionMapper.findQuestionById(id);
+        model.addAttribute("title", question.getTitle());
+        model.addAttribute("description", question.getDescription());
+        model.addAttribute("tag", question.getTag());
+        model.addAttribute("id",question.getId());
+        return "/publish";
     }
 }
