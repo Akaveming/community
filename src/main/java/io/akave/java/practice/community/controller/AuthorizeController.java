@@ -5,6 +5,7 @@ import io.akave.java.practice.community.dto.GithubUser;
 import io.akave.java.practice.community.mapper.UserMapper;
 import io.akave.java.practice.community.model.User;
 import io.akave.java.practice.community.provider.GithubProvider;
+import io.akave.java.practice.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpRequest;
@@ -33,7 +34,7 @@ public class AuthorizeController {
     private String redirectUri;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     /**
      * GitHub 登录验证回调
@@ -55,18 +56,12 @@ public class AuthorizeController {
 
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getGithubUser(accessToken);
-        if (githubUser != null) {
-            User user = new User();
+        if (githubUser != null && githubUser.getId() != null) {
             String token = UUID.randomUUID().toString();
-            user.setToken(token);
-            user.setName(githubUser.getName());
-            user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
-            user.setBio(githubUser.getBio());
-            user.setAvatarUrl(githubUser.getAvatarUrl());
-            userMapper.insert(user);
-            response.addCookie(new Cookie("token", token));
+            boolean result = userService.createOrUpdate(githubUser,token);
+            if (result) {
+                response.addCookie(new Cookie("token", token));
+            }
             return "redirect:/";
         } else {
             return "redirect:/";

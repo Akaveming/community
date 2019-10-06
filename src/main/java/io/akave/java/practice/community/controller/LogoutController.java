@@ -1,6 +1,5 @@
 package io.akave.java.practice.community.controller;
 
-import io.akave.java.practice.community.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,20 +17,10 @@ public class LogoutController {
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        User user = (User) request.getSession().getAttribute("user");
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null && cookies.length != 0) {
-            for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) {
-                    if (user.getToken().equals(cookie.getValue())) {
-                        cookie.setMaxAge(0);
-                        response.addCookie(cookie);
-                        return "redirect:/";
-                    }
-                    break;
-                }
-            }
-        }
+        request.getSession().removeAttribute("user");
+        Cookie token = new Cookie("token", "");
+        token.setMaxAge(0);
+        response.addCookie(token);
         return "redirect:/";
     }
 }
